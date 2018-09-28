@@ -105,12 +105,25 @@ function handleItemCheckClicked() {
 }
 
 /**
+ * Delete a shopping list item from the global store.
+ * @param {number} index The index corresponding with the item to delete.
+ */
+function deleteListItemAtIndex(index) {
+  console.log(`Deleteing item at index ${index}`);
+  STORE.splice(index, 1);
+}
+
+/**
  * Sets up events handlers for deleting shopping list items.
  * Story: "A user should be able to delete items from the list."
  */
 function handleDeleteItemClicked() {
-  console.log('`handleDeleteItemClicked` ran');
-
+  $('.js-shopping-list').on('click', '.js-item-delete', (event) => {
+    console.log('`handleDeleteItemClicked` ran');
+    const itemIndex = getItemIndexFromElement(event.currentTarget);
+    deleteListItemAtIndex(itemIndex);
+    renderShoppingList();
+  });
 }
 
 function handleShoppingList() {
