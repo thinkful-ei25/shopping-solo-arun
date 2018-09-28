@@ -38,6 +38,9 @@ function generateItemElement(item) {
         <button class="shopping-item-toggle js-item-toggle">
             <span class="button-label">check</span>
         </button>
+        <button class="shopping-item-edit js-item-edit">
+            <span class="button-label">edit</span>
+        </button>
         <button class="shopping-item-delete js-item-delete">
             <span class="button-label">delete</span>
         </button>
@@ -202,6 +205,29 @@ function handleFilterFieldUpdates() {
   $('.js-shopping-list-filter-button').click(onFilterFieldUpdate);
 }
 
+/**
+ * Sets up event handlers to handle setting an item to an editable state.
+ */
+function handleEditButtonClicked() {
+  $('.js-shopping-list').on('click', '.js-item-edit', (event) => {
+    console.log('`handleEditButtonClicked` ran');
+
+    const itemIndex = getItemIndexFromElement(event.currentTarget);
+    activateItemEditModeFromIndex(itemIndex);
+    renderShoppingList();
+  });
+}
+
+/**
+ * Set the edit mode of a shopping list item
+ * @param {number} index Global index of item to set as editable
+ */
+function activateItemEditModeFromIndex(index) {
+  const item = STORE.shoppingList[index];
+  console.log(`Putting item named ${item.name} into Edit mode`);
+  item.inEditMode = true;
+}
+
 function handleShoppingList() {
   renderShoppingList();
   handleNewItemSubmit();
@@ -209,6 +235,7 @@ function handleShoppingList() {
   handleDeleteItemClicked();
   handleToggleHideChecked();
   handleFilterFieldUpdates();
+  handleEditButtonClicked();
 }
 
 $(handleShoppingList);
