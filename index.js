@@ -82,6 +82,15 @@ function getItemIndexFromElement(element) {
 }
 
 /**
+ * Toggle the state of a list item between checked and unchecked
+ * @param {number} index The index of a list item in the global store
+ */
+function toggleCheckedForListItem(index) {
+  console.log(`Toggling checked property for item at index ${index}`);
+  STORE[index].checked = !STORE[index].checked;
+}
+
+/**
  * Sets up event handlers for checking and unchecking shopping list items.
  * Story: "A user should be able to check items on the list."
  */
@@ -89,7 +98,8 @@ function handleItemCheckClicked() {
   $('.js-shopping-list').on('click', '.js-item-toggle', (event) => {
     console.log('`handleItemCheckClicked` ran');
     const itemIndex = getItemIndexFromElement(event.currentTarget);
-    console.log(itemIndex);
+    toggleCheckedForListItem(itemIndex);
+    renderShoppingList();
   });
 }
 
