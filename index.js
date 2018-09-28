@@ -13,8 +13,14 @@ const STORE = {
     { name: 'milk', checked: true, id: 2 },
     { name: 'bread', checked: false, id: 3  }
   ],
-  nextID: 4,
-  renderChecked: true
+  maxID: 4,
+  renderChecked: true,
+
+  nextID() {
+    const id = this.maxID;
+    this.maxID += 1;
+    return id;
+  }
 };
 
 /**
@@ -63,20 +69,11 @@ function renderShoppingList() {
   $('.js-shopping-list').html(shoppingListString);
 }
 
-/**
- * Get the next atomicly increasing ID
- */
-function getNextID() {
-  const id = STORE.nextID;
-  STORE.nextID += 1;
-  return id;
-}
-
 function addItemToShoppingList(name) {
   console.log(`Adding ${name} to shoping list`);
   // XXX: ideally `id` would be something like a GUID
   // Instead we are using an always-increasing counter
-  STORE.shoppingList.push({name, id: getNextID(), checked: false});
+  STORE.shoppingList.push({name, id: STORE.nextID(), checked: false});
 }
 
 /**
