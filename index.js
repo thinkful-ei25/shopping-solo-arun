@@ -71,11 +71,26 @@ function handleNewItemSubmit() {
 }
 
 /**
+ * Determines the index of Shopping List item in the global store.
+ * @param {DOMElelment} element A shopping list item
+ */
+function getItemIndexFromElement(element) {
+  const indexString = $(element)
+    .closest('.js-item-index-element')
+    .attr('data-item-index');
+  return parseInt(indexString, 10);
+}
+
+/**
  * Sets up event handlers for checking and unchecking shopping list items.
  * Story: "A user should be able to check items on the list."
  */
 function handleItemCheckClicked() {
-  console.log('`handleItemCheckClicked` ran');
+  $('.js-shopping-list').on('click', '.js-item-toggle', (event) => {
+    console.log('`handleItemCheckClicked` ran');
+    const itemIndex = getItemIndexFromElement(event.currentTarget);
+    console.log(itemIndex);
+  });
 }
 
 /**
