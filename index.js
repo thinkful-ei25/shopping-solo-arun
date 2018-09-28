@@ -126,11 +126,31 @@ function handleDeleteItemClicked() {
   });
 }
 
+/**
+ * Toggle whether checked items should be rendered
+ */
+function toggleRenderChecked() {
+}
+
+/**
+ * Sets up event handlers for the toggling whether to hide checked items
+ * Story: "A user should be able to use a switch to toggle between displaying
+ * all itmes or only those that are unchecked"
+ */
+function handleToggleHideChecked() {
+  $('.js-shopping-list-hide-checked').click(() => {
+    console.log('`handleToggleHideChecked` ran');
+    toggleRenderChecked();
+    renderShoppingList();
+  });
+}
+
 function handleShoppingList() {
   renderShoppingList();
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
+  handleToggleHideChecked();
 }
 
 $(handleShoppingList);
