@@ -6,10 +6,10 @@
  *    checked: whether the item is currently checked or not
  */
 const STORE = [
-  { name: 'apples', checked: false },
-  { name: 'oranges', checked: false },
-  { name: 'milk', checked: true },
-  { name: 'bread', checked: false }
+  { name: "apples", checked: false },
+  { name: "oranges", checked: false },
+  { name: "milk", checked: true },
+  { name: "bread", checked: false }
 ];
 
 /**
@@ -17,6 +17,8 @@ const STORE = [
  */
 function renderShoppingList() {
   console.log('`renderShoppingList` ran');
+  const shoppingListString = '<li>apples</li>';
+  $('.js-shopping-list').html(shoppingListString);
 }
 
 /**
