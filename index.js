@@ -12,6 +12,12 @@ const STORE = [
   { name: 'bread', checked: false }
 ];
 
+/**
+ * Generates a shopping list item and its associated buttons
+ * @param {G} item The item for which to generate
+ * @param {*} itemIndex The index of the item in the global data store
+ * @param {*} template Unknown
+ */
 function generateItemElement(item, itemIndex, template) {
   return `
     <li class="js-item-index-element" data-item-index="${itemIndex}">
