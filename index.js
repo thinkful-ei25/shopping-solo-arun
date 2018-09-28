@@ -25,10 +25,23 @@ const STORE = {
 };
 
 /**
+ * Generate the html for a shopping list item in edit mode
+ * @param {Object} item The shopping list item to render
+ */
+function generateItemElementInEditMode(item) {
+  return `
+    <li class="js-item-index-element" data-item-id="${item.id}">
+      <form id="js-item-edit-form">
+        <input type="text" name="item-name" value="${item.name}">
+        <button type="submit">Update Item</button>
+      </form>
+    </li>
+  `;
+}
+
+/**
  * Generates a shopping list item and its associated buttons
- * @param {G} item The item for which to generate
- * @param {*} itemIndex The index of the item in the global data store
- * @param {*} template Unknown
+ * @param {Object} item The item for which to generate
  */
 function generateItemElement(item) {
   return `
@@ -55,7 +68,7 @@ function generateItemElement(item) {
 function generateShoppingListItemsString(shoppingList) {
   console.log('Generating shopping list elements');
   return shoppingList
-    .map(generateItemElement)
+    .map(item => item.inEditMode ? generateItemElementInEditMode(item) : generateItemElement(item))
     .join('');
 }
 
