@@ -25,10 +25,23 @@ const STORE = {
 };
 
 /**
+ * Generate the html for a shopping list item in edit mode
+ * @param {Object} item The shopping list item to render
+ */
+function generateItemElementInEditMode(item) {
+  return `
+    <li class="js-item-index-element" data-item-id="${item.id}">
+      <form class="js-item-edit-form">
+        <input type="text" name="item-name" value="${item.name}" class="js-item-edit-name">
+        <button type="submit">Update Item</button>
+      </form>
+    </li>
+  `;
+}
+
+/**
  * Generates a shopping list item and its associated buttons
- * @param {G} item The item for which to generate
- * @param {*} itemIndex The index of the item in the global data store
- * @param {*} template Unknown
+ * @param {Object} item The item for which to generate
  */
 function generateItemElement(item) {
   return `
@@ -37,6 +50,9 @@ function generateItemElement(item) {
       <div class="shopping-item-controls">
         <button class="shopping-item-toggle js-item-toggle">
             <span class="button-label">check</span>
+        </button>
+        <button class="shopping-item-edit js-item-edit">
+            <span class="button-label">edit</span>
         </button>
         <button class="shopping-item-delete js-item-delete">
             <span class="button-label">delete</span>
@@ -52,7 +68,7 @@ function generateItemElement(item) {
 function generateShoppingListItemsString(shoppingList) {
   console.log('Generating shopping list elements');
   return shoppingList
-    .map(generateItemElement)
+    .map(item => item.inEditMode ? generateItemElementInEditMode(item) : generateItemElement(item))
     .join('');
 }
 
@@ -202,6 +218,55 @@ function handleFilterFieldUpdates() {
   $('.js-shopping-list-filter-button').click(onFilterFieldUpdate);
 }
 
+/**
+ * Sets up event handlers to handle setting an item to an editable state.
+ */
+function handleEditButtonClicked() {
+  $('.js-shopping-list').on('click', '.js-item-edit', (event) => {
+    console.log('`handleEditButtonClicked` ran');
+
+    const itemIndex = getItemIndexFromElement(event.currentTarget);
+    toggleEditModeForIndex(itemIndex);
+    renderShoppingList();
+  });
+}
+
+/**
+ * Flip the edit mode of a shopping list item
+ * @param {number} index Global index of item to set as editable
+ */
+function toggleEditModeForIndex(index) {
+  const item = STORE.shoppingList[index];
+  console.log(`Flipping edit mode for ${item.name} to ${!item.inEditMode}`);
+  item.inEditMode = !item.inEditMode;
+}
+
+/**
+ * Set up event handlers for submitting changes to an item
+ */
+function handleItemEditSubmit() {
+  $('.js-shopping-list').on('submit', '.js-item-edit-form', (event) => {
+    event.preventDefault();
+    console.log('`handleItemEditSubmit` ran');
+
+    const itemIndex = getItemIndexFromElement(event.currentTarget);
+    const name = $('.js-item-edit-name').val();
+    updateItemAtIndex(itemIndex, {name});
+    toggleEditModeForIndex(itemIndex);
+    renderShoppingList();
+  });
+}
+
+/**
+ * Update a shopping list item by merging (and thus overwriting) a replacement
+ * shopping list item.
+ * @param {number} index An index into the global shopping list store
+ * @param {Object} item A shopping list item to merge into the original
+ */
+function updateItemAtIndex(index, item) {
+  Object.assign(STORE.shoppingList[index], item);
+}
+
 function handleShoppingList() {
   renderShoppingList();
   handleNewItemSubmit();
@@ -209,6 +274,8 @@ function handleShoppingList() {
   handleDeleteItemClicked();
   handleToggleHideChecked();
   handleFilterFieldUpdates();
+  handleEditButtonClicked();
+  handleItemEditSubmit();
 }
 
 $(handleShoppingList);
