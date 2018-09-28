@@ -60,6 +60,7 @@ function addItemToShoppingList(name) {
  */
 function handleNewItemSubmit() {
   $('#js-shopping-list-form').submit((event) => {
+    console.log('`handleNewItemSubmit` ran');
     event.preventDefault();
 
     const newItemName = $('.js-shopping-list-entry').val();
@@ -109,6 +110,7 @@ function handleItemCheckClicked() {
  */
 function handleDeleteItemClicked() {
   console.log('`handleDeleteItemClicked` ran');
+
 }
 
 function handleShoppingList() {
