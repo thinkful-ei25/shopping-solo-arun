@@ -43,12 +43,25 @@ function renderShoppingList() {
   $('.js-shopping-list').html(shoppingListString);
 }
 
+function addItemToShoppingList(name) {
+  console.log(`Adding ${name} to shoping list`);
+  STORE.push({name, checked: false});
+}
+
 /**
  * Sets up event handlers for adding a new item to the shopping list.
  * Story: "A user should be able to add items to the list."
  */
 function handleNewItemSubmit() {
-  console.log('`handleNewItemSubmit` ran');
+  $('#js-shopping-list-form').submit((event) => {
+    event.preventDefault();
+
+    const newItemName = $('.js-shopping-list-entry').val();
+    $('.js-shopping-list-entry').val('');
+
+    addItemToShoppingList(newItemName);
+    renderShoppingList();
+  });
 }
 
 /**
