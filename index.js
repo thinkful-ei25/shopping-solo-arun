@@ -15,6 +15,7 @@ const STORE = {
   ],
   maxID: 4,
   renderChecked: true,
+  textFilter: '',
 
   nextID() {
     const id = this.maxID;
@@ -63,7 +64,8 @@ function generateShoppingListItemsString(shoppingList) {
 function renderShoppingList() {
   console.log('`renderShoppingList` ran');
   const itemsToRender = STORE.shoppingList
-    .filter(item => (STORE.renderChecked || !item.checked));
+    .filter(item => (STORE.renderChecked || !item.checked))
+    .filter(item => item.name.includes(STORE.textFilter));
 
   const shoppingListString = generateShoppingListItemsString(itemsToRender);
   $('.js-shopping-list').html(shoppingListString);
@@ -170,12 +172,43 @@ function handleToggleHideChecked() {
   });
 }
 
+/**
+ * Handle updates to the filter field
+ */
+function onFilterFieldUpdate() {
+  console.log('`onFilterFieldUpdate` ran');
+
+  const input = $('.js-shopping-list-name-filter').val();
+
+  console.log(`Updating filter to be "${input}"`);
+  STORE.textFilter = input;
+  renderShoppingList();
+}
+
+/**
+ * Sets up event handlers to do with filtering items by name
+ */
+function handleFilterFieldUpdates() {
+  $('.js-shopping-list-name-filter').change(onFilterFieldUpdate);
+
+  // Prevent <ENTER> from creating a new (likely blank) shopping list item.
+  $('.js-shopping-list-name-filter').keydown((event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      onFilterFieldUpdate();
+    }
+  });
+
+  $('.js-shopping-list-filter-button').click(onFilterFieldUpdate);
+}
+
 function handleShoppingList() {
   renderShoppingList();
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleToggleHideChecked();
+  handleFilterFieldUpdates();
 }
 
 $(handleShoppingList);
