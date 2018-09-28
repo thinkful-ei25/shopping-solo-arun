@@ -11,7 +11,8 @@ const STORE = {
     { name: 'oranges', checked: false },
     { name: 'milk', checked: true },
     { name: 'bread', checked: false }
-  ]
+  ],
+  renderChecked: true
 };
 
 /**
@@ -35,6 +36,10 @@ function generateItemElement(item, itemIndex, template) {
     </li>`;
 }
 
+/**
+ * Generate a string of HTML elements from a list of shopping list items
+ * @param {Array} shoppingList A list of shopping-list items
+ */
 function generateShoppingListItemsString(shoppingList) {
   console.log('Generating shopping list elements');
   return shoppingList
@@ -44,10 +49,15 @@ function generateShoppingListItemsString(shoppingList) {
 
 /**
  * Renders the shopping list to the DOM.
+ * 
+ * Filters based on renderChecked global state.
  */
 function renderShoppingList() {
   console.log('`renderShoppingList` ran');
-  const shoppingListString = generateShoppingListItemsString(STORE.shoppingList);
+  const itemsToRender = STORE.shoppingList
+    .filter(item => (STORE.renderChecked || !item.checked));
+
+  const shoppingListString = generateShoppingListItemsString(itemsToRender);
   $('.js-shopping-list').html(shoppingListString);
 }
 
@@ -132,6 +142,8 @@ function handleDeleteItemClicked() {
  * Toggle whether checked items should be rendered
  */
 function toggleRenderChecked() {
+  STORE.renderChecked = !STORE.renderChecked;
+  console.log(`Set renderChecked to ${STORE.renderChecked}`);
 }
 
 /**
