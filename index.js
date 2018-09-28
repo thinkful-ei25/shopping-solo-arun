@@ -1,6 +1,18 @@
 'use strict';
 
 /**
+ * Stores the global state of the shopping list.
+ *    name: the name of the shopping list item
+ *    checked: whether the item is currently checked or not
+ */
+const STORE = [
+  { name: 'apples', checked: false },
+  { name: 'oranges', checked: false },
+  { name: 'milk', checked: true },
+  { name: 'bread', checked: false }
+];
+
+/**
  * Renders the shopping list to the DOM.
  */
 function renderShoppingList() {
