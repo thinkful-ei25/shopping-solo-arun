@@ -4,14 +4,16 @@
  * Stores the global state of the shopping list.
  *    name: the name of the shopping list item
  *    checked: whether the item is currently checked or not
+ *    id: unique identifier (XXX: should be UUID)
  */
 const STORE = {
   shoppingList: [
-    { name: 'apples', checked: false },
-    { name: 'oranges', checked: false },
-    { name: 'milk', checked: true },
-    { name: 'bread', checked: false }
+    { name: 'apples', checked: false, id: 0 },
+    { name: 'oranges', checked: false, id: 1 },
+    { name: 'milk', checked: true, id: 2 },
+    { name: 'bread', checked: false, id: 3  }
   ],
+  nextID: 4,
   renderChecked: true
 };
 
@@ -21,9 +23,9 @@ const STORE = {
  * @param {*} itemIndex The index of the item in the global data store
  * @param {*} template Unknown
  */
-function generateItemElement(item, itemIndex, template) {
+function generateItemElement(item) {
   return `
-    <li class="js-item-index-element" data-item-index="${itemIndex}">
+    <li class="js-item-index-element" data-item-id="${item.id}">
       <span class="shopping-item js-shopping-item ${item.checked ? 'shopping-item__checked' : ''}">${item.name}</span>
       <div class="shopping-item-controls">
         <button class="shopping-item-toggle js-item-toggle">
@@ -63,7 +65,10 @@ function renderShoppingList() {
 
 function addItemToShoppingList(name) {
   console.log(`Adding ${name} to shoping list`);
-  STORE.shoppingList.push({name, checked: false});
+  // XXX: ideally `id` would be something like a GUID
+  // Instead we are using an always-increasing counter
+  STORE.shoppingList.push({name, id: STORE.nextID, checked: false});
+  STORE.nextID += 1;
 }
 
 /**
@@ -90,8 +95,9 @@ function handleNewItemSubmit() {
 function getItemIndexFromElement(element) {
   const indexString = $(element)
     .closest('.js-item-index-element')
-    .attr('data-item-index');
-  return parseInt(indexString, 10);
+    .attr('data-item-id');
+  const id = parseInt(indexString, 10);
+  return STORE.shoppingList.findIndex((item) => item.id === id);
 }
 
 /**
