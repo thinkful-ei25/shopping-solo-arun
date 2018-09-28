@@ -6,20 +6,23 @@
  *    checked: whether the item is currently checked or not
  */
 const STORE = [
-  { name: "apples", checked: false },
-  { name: "oranges", checked: false },
-  { name: "milk", checked: true },
-  { name: "bread", checked: false }
+  { name: 'apples', checked: false },
+  { name: 'oranges', checked: false },
+  { name: 'milk', checked: true },
+  { name: 'bread', checked: false }
 ];
+
+function generateItemElement(item, itemIndex, template) {
+  return `
+    <li>${item.name}</li>
+  `;
+}
 
 function generateShoppingListItemsString(shoppingList) {
   console.log('Generating shopping list element');
-  return `
-    <li>apples</li>
-    <li>oranges</li>
-    <li>milk</li>
-    <li>bread</li>
-  `;
+  return shoppingList
+    .map(generateItemElement)
+    .join('');
 }
 
 /**
