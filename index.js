@@ -31,8 +31,8 @@ const STORE = {
 function generateItemElementInEditMode(item) {
   return `
     <li class="js-item-index-element" data-item-id="${item.id}">
-      <form id="js-item-edit-form">
-        <input type="text" name="item-name" value="${item.name}">
+      <form class="js-item-edit-form">
+        <input type="text" name="item-name" value="${item.name}" class="js-item-edit-name">
         <button type="submit">Update Item</button>
       </form>
     </li>
@@ -226,19 +226,45 @@ function handleEditButtonClicked() {
     console.log('`handleEditButtonClicked` ran');
 
     const itemIndex = getItemIndexFromElement(event.currentTarget);
-    activateItemEditModeFromIndex(itemIndex);
+    toggleEditModeForIndex(itemIndex);
     renderShoppingList();
   });
 }
 
 /**
- * Set the edit mode of a shopping list item
+ * Flip the edit mode of a shopping list item
  * @param {number} index Global index of item to set as editable
  */
-function activateItemEditModeFromIndex(index) {
+function toggleEditModeForIndex(index) {
   const item = STORE.shoppingList[index];
-  console.log(`Putting item named ${item.name} into Edit mode`);
-  item.inEditMode = true;
+  console.log(`Flipping edit mode for ${item.name} to ${!item.inEditMode}`);
+  item.inEditMode = !item.inEditMode;
+}
+
+/**
+ * Set up event handlers for submitting changes to an item
+ */
+function handleItemEditSubmit() {
+  $('.js-shopping-list').on('submit', '.js-item-edit-form', (event) => {
+    event.preventDefault();
+    console.log('`handleItemEditSubmit` ran');
+
+    const itemIndex = getItemIndexFromElement(event.currentTarget);
+    const name = $('.js-item-edit-name').val();
+    updateItemAtIndex(itemIndex, {name});
+    toggleEditModeForIndex(itemIndex);
+    renderShoppingList();
+  });
+}
+
+/**
+ * Update a shopping list item by merging (and thus overwriting) a replacement
+ * shopping list item.
+ * @param {number} index An index into the global shopping list store
+ * @param {Object} item A shopping list item to merge into the original
+ */
+function updateItemAtIndex(index, item) {
+  Object.assign(STORE.shoppingList[index], item);
 }
 
 function handleShoppingList() {
@@ -249,6 +275,7 @@ function handleShoppingList() {
   handleToggleHideChecked();
   handleFilterFieldUpdates();
   handleEditButtonClicked();
+  handleItemEditSubmit();
 }
 
 $(handleShoppingList);
