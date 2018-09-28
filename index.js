@@ -181,7 +181,7 @@ function toggleRenderChecked() {
  * all itmes or only those that are unchecked"
  */
 function handleToggleHideChecked() {
-  $('.js-shopping-list-hide-checked').click(() => {
+  $('.js-shopping-list-hide-checked').change(() => {
     console.log('`handleToggleHideChecked` ran');
     toggleRenderChecked();
     renderShoppingList();
@@ -205,17 +205,10 @@ function onFilterFieldUpdate() {
  * Sets up event handlers to do with filtering items by name
  */
 function handleFilterFieldUpdates() {
-  $('.js-shopping-list-name-filter').change(onFilterFieldUpdate);
-
-  // Prevent <ENTER> from creating a new (likely blank) shopping list item.
-  $('.js-shopping-list-name-filter').keydown((event) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      onFilterFieldUpdate();
-    }
+  $('#js-filter-form').submit((event) => {
+    event.preventDefault();
+    onFilterFieldUpdate();
   });
-
-  $('.js-shopping-list-filter-button').click(onFilterFieldUpdate);
 }
 
 /**
