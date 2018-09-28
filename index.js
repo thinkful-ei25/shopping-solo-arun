@@ -190,6 +190,15 @@ function onFilterFieldUpdate() {
  */
 function handleFilterFieldUpdates() {
   $('.js-shopping-list-name-filter').change(onFilterFieldUpdate);
+
+  // Prevent <ENTER> from creating a new (likely blank) shopping list item.
+  $('.js-shopping-list-name-filter').keydown((event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      onFilterFieldUpdate();
+    }
+  });
+
   $('.js-shopping-list-filter-button').click(onFilterFieldUpdate);
 }
 
