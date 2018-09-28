@@ -63,12 +63,20 @@ function renderShoppingList() {
   $('.js-shopping-list').html(shoppingListString);
 }
 
+/**
+ * Get the next atomicly increasing ID
+ */
+function getNextID() {
+  const id = STORE.nextID;
+  STORE.nextID += 1;
+  return id;
+}
+
 function addItemToShoppingList(name) {
   console.log(`Adding ${name} to shoping list`);
   // XXX: ideally `id` would be something like a GUID
   // Instead we are using an always-increasing counter
-  STORE.shoppingList.push({name, id: STORE.nextID, checked: false});
-  STORE.nextID += 1;
+  STORE.shoppingList.push({name, id: getNextID(), checked: false});
 }
 
 /**
