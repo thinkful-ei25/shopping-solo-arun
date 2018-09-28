@@ -5,12 +5,14 @@
  *    name: the name of the shopping list item
  *    checked: whether the item is currently checked or not
  */
-const STORE = [
-  { name: 'apples', checked: false },
-  { name: 'oranges', checked: false },
-  { name: 'milk', checked: true },
-  { name: 'bread', checked: false }
-];
+const STORE = {
+  shoppingList: [
+    { name: 'apples', checked: false },
+    { name: 'oranges', checked: false },
+    { name: 'milk', checked: true },
+    { name: 'bread', checked: false }
+  ]
+};
 
 /**
  * Generates a shopping list item and its associated buttons
@@ -45,13 +47,13 @@ function generateShoppingListItemsString(shoppingList) {
  */
 function renderShoppingList() {
   console.log('`renderShoppingList` ran');
-  const shoppingListString = generateShoppingListItemsString(STORE);
+  const shoppingListString = generateShoppingListItemsString(STORE.shoppingList);
   $('.js-shopping-list').html(shoppingListString);
 }
 
 function addItemToShoppingList(name) {
   console.log(`Adding ${name} to shoping list`);
-  STORE.push({name, checked: false});
+  STORE.shoppingList.push({name, checked: false});
 }
 
 /**
@@ -88,7 +90,7 @@ function getItemIndexFromElement(element) {
  */
 function toggleCheckedForListItem(index) {
   console.log(`Toggling checked property for item at index ${index}`);
-  STORE[index].checked = !STORE[index].checked;
+  STORE.shoppingList[index].checked = !STORE.shoppingList[index].checked;
 }
 
 /**
@@ -110,7 +112,7 @@ function handleItemCheckClicked() {
  */
 function deleteListItemAtIndex(index) {
   console.log(`Deleteing item at index ${index}`);
-  STORE.splice(index, 1);
+  STORE.shoppingList.splice(index, 1);
 }
 
 /**
